@@ -24,7 +24,7 @@ Currently, Scalafix does not provide any IDE integrations with IntelliJ/ENSIME.<
 <p>The sbt-plugin is the recommended integration for semantic rules.</p>
 
 <div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="c1">// ===&gt; project/plugins.sbt
-</span><span class="n">addSbtPlugin</span><span class="o">(</span><span class="s">"ch.epfl.scala"</span> <span class="o">%</span> <span class="s">"sbt-scalafix"</span> <span class="o">%</span> <span class="s">"0.5.2"</span><span class="o">)</span>
+</span><span class="n">addSbtPlugin</span><span class="o">(</span><span class="s">"ch.epfl.scala"</span> <span class="o">%</span> <span class="s">"sbt-scalafix"</span> <span class="o">%</span> <span class="s">"0.5.3"</span><span class="o">)</span>
 
 <span class="c1">// ===&gt; build.sbt
 </span><span class="n">scalaVersion</span> <span class="o">:=</span> <span class="s">"2.12.3"</span> <span class="c1">// 2.11.11 is also supported.
@@ -136,7 +136,7 @@ Currently, Scalafix does not provide any IDE integrations with IntelliJ/ENSIME.<
 information from the sbt compiler. To enable semanticdb-sbt,</p>
 
 <div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="c1">// ~/.sbt/0.13/plugins/plugins.sbt
-</span><span class="n">addSbtPlugin</span><span class="o">(</span><span class="s">"ch.epfl.scala"</span> <span class="o">%</span> <span class="s">"sbt-scalafix"</span> <span class="o">%</span> <span class="s">"0.5.2"</span><span class="o">)</span>
+</span><span class="n">addSbtPlugin</span><span class="o">(</span><span class="s">"ch.epfl.scala"</span> <span class="o">%</span> <span class="s">"sbt-scalafix"</span> <span class="o">%</span> <span class="s">"0.5.3"</span><span class="o">)</span>
 <span class="c1">// ~/.sbt/0.13/build.sbt
 </span><span class="k">import</span> <span class="nn">scalafix.sbt.ScalafixPlugin.autoImport._</span>
 <span class="n">sbtfixSettings</span> <span class="c1">// enable semanticdb-sbt for sbt metabuilds.
@@ -152,7 +152,7 @@ information from the sbt compiler. To enable semanticdb-sbt,</p>
 
 <h3 id="coursier">Coursier</h3>
 <div class="language-sh highlighter-rouge"><pre class="highlight"><code>// coursier
-coursier bootstrap ch.epfl.scala:scalafix-cli_@:0.5.2 -f --main scalafix.cli.Cli -o scalafix
+coursier bootstrap ch.epfl.scala:scalafix-cli_@:0.5.3 -f --main scalafix.cli.Cli -o scalafix
 ./scalafix --help
 </code></pre>
 </div>
@@ -174,7 +174,7 @@ wget -O scalafix https://github.com/scalacenter/scalafix/blob/master/scalafix?ra
 <p>Once the scalafix cli is installed, consult the –help page for further usage instructions.</p>
 
 <h3 id="help">–help</h3>
-<div class="highlighter-rouge"><pre class="highlight"><code>scalafix 0.5.2-69-6d904271
+<div class="highlighter-rouge"><pre class="highlight"><code>scalafix 0.5.3-2-25503f64
 Usage: scalafix [options] [&lt;file&gt;...]
   --usage  
         Print usage and exit
@@ -279,9 +279,9 @@ Exit status codes:
 <p>Scalafix can be used as a library to run custom rules.</p>
 
 <div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="c1">// ===&gt; build.sbt
-</span><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">"ch.epfl.scala"</span> <span class="o">%%</span> <span class="s">"scalafix-core"</span> <span class="o">%</span> <span class="s">"0.5.2"</span>
+</span><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">"ch.epfl.scala"</span> <span class="o">%%</span> <span class="s">"scalafix-core"</span> <span class="o">%</span> <span class="s">"0.5.3"</span>
 <span class="c1">// (optional) Scala.js is also supported
-</span><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">"ch.epfl.scala"</span> <span class="o">%%%</span> <span class="s">"scalafix-core"</span> <span class="o">%</span> <span class="s">"0.5.2"</span>
+</span><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">"ch.epfl.scala"</span> <span class="o">%%%</span> <span class="s">"scalafix-core"</span> <span class="o">%</span> <span class="s">"0.5.3"</span>
 </code></pre>
 </div>
 
