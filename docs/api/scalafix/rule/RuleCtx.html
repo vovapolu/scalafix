@@ -430,6 +430,25 @@ use renameSymbol.</p><p>Experimental. May produce broken code in some cases. Thi
 is the same patch as <code>replace:com.foo/com.bar</code> from sbt-scalafix.
 </p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../patch/PatchOps.html" class="extype" name="scalafix.patch.PatchOps">PatchOps</a></dd></dl></div>
     </li><li name="scalafix.patch.PatchOps#replaceSymbols" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="replaceSymbols(toReplace:Seq[(String,String)])(implicitnoop:DummyImplicit,implicitindex:scalafix.SemanticdbIndex):scalafix.patch.Patch"></a>
+      <a id="replaceSymbols(Seq[(String,String)])(DummyImplicit,SemanticdbIndex):patch.Patch"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">replaceSymbols</span><span class="params">(<span name="toReplace">toReplace: <span class="extype" name="scala.Seq">Seq</span>[(<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Predef.String">String</span>)]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="noop">noop: <span class="extype" name="scala.Predef.DummyImplicit">DummyImplicit</span></span>, <span name="index">index: <a href="../package.html#SemanticdbIndex=scalafix.util.SemanticdbIndex" class="extmbr" name="scalafix.SemanticdbIndex">SemanticdbIndex</a></span>)</span><span class="result">: <a href="../patch/Patch.html" class="extype" name="scalafix.patch.Patch">patch.Patch</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#scalafix.rule.RuleCtx@replaceSymbols(toReplace:Seq[(String,String)])(implicitnoop:DummyImplicit,implicitindex:scalafix.SemanticdbIndex):scalafix.patch.Patch" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Helper for calling replaceSymbols without needing _*</p><div class="fullcomment"><div class="comment cmt"><p>Helper for calling replaceSymbols without needing _*</p><p>Defers work to replaceSymbols((String, String)*). Needs a dummy implicit
+to differentiate from replaceSymbols((String, String)*) after type erasure
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../patch/PatchOps.html" class="extype" name="scalafix.patch.PatchOps">PatchOps</a></dd></dl></div>
+    </li><li name="scalafix.patch.PatchOps#replaceSymbols" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="replaceSymbols(toReplace:(String,String)*)(implicitindex:scalafix.SemanticdbIndex):scalafix.patch.Patch"></a>
       <a id="replaceSymbols((String,String)*)(SemanticdbIndex):patch.Patch"></a>
       <h4 class="signature">
