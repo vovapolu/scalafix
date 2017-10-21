@@ -2,14 +2,7 @@
 
 <p><em>Since 0.5.0</em></p>
 
-<p>This rule reports errors when the compiler inferred one of the following types:</p>
-
-<ul>
-  <li><code class="highlighter-rouge">Serializable</code></li>
-  <li><code class="highlighter-rouge">Any</code></li>
-  <li><code class="highlighter-rouge">AnyVal</code></li>
-  <li><code class="highlighter-rouge">Product</code></li>
-</ul>
+<p>This rule reports errors when the compiler infers certain types.</p>
 
 <p>Example:</p>
 
@@ -19,10 +12,39 @@
 </code></pre>
 </div>
 
-<h2 id="known-limitations">Known limitations}</h2>
+<h2 id="configuration">Configuration</h2>
+
+<p>By default the rule reports on the following types:</p>
 
 <ul>
-  <li>Scalafix does not yet expose an way to disable rules across regions of code, track <a href="https://github.com/scalacenter/scalafix/issues/241">#241</a> for updates.</li>
+  <li><code class="highlighter-rouge">Serializable</code></li>
+  <li><code class="highlighter-rouge">Any</code></li>
+  <li><code class="highlighter-rouge">AnyVal</code></li>
+  <li><code class="highlighter-rouge">Product</code></li>
+</ul>
+
+<p>It’s possible to configure which types should not be inferred. In .scalafix.conf:</p>
+
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="nc">NoInfer</span><span class="o">.</span><span class="n">symbols</span> <span class="k">=</span> <span class="o">[</span>
+  <span class="err">"</span><span class="kt">scala.Predef.any2stringadd</span><span class="err">"</span>
+<span class="o">]</span>
+</code></pre>
+</div>
+
+<p>and it would report</p>
+
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="nc">MyCode</span><span class="o">.</span><span class="n">scala</span><span class="k">:</span><span class="err">7</span><span class="kt">:</span> <span class="kt">error:</span> <span class="err">[</span><span class="kt">NoInfer.any2stringadd</span><span class="err">]</span> <span class="kt">Inferred</span> <span class="kt">any2stringadd</span>
+  <span class="k">def</span> <span class="n">sum</span><span class="o">[</span><span class="kt">A</span><span class="o">](</span><span class="n">a</span><span class="k">:</span> <span class="kt">A</span><span class="o">,</span> <span class="n">b</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="o">{</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">}</span>
+                                          <span class="o">^</span>
+</code></pre>
+</div>
+
+<p><strong>Note:</strong> when a configuration for NoInfer is given it completely overwrites the defaults so they have to be explicitely added to the list of symbols if needed.</p>
+
+<h2 id="known-limitations">Known limitations</h2>
+
+<ul>
+  <li>Scalafix does not yet expose a way to disable rules across regions of code, track <a href="https://github.com/scalacenter/scalafix/issues/241">issue #241 for updates</a>.</li>
 </ul>
 </section></div></div></div></div><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script><script src="/scalafix/highlight/highlight.pack.js"></script><script>hljs.configure({
 languages:['scala','java','bash']
