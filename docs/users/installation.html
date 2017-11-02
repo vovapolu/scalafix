@@ -36,6 +36,10 @@ Currently, Scalafix does not provide any IDE integrations with IntelliJ/ENSIME.<
 </span><span class="n">scalacOptions</span> <span class="o">:=</span> <span class="nc">List</span><span class="o">(...)</span>                    <span class="c1">// keep unchanged
 </span><span class="n">scalacOptions</span> <span class="o">++=</span> <span class="n">scalafixScalacOptions</span><span class="o">.</span><span class="n">value</span> <span class="c1">// add this line
 </span>
+<span class="c1">// enable scalafix in custom configurations, only Test and Compile are
+// enabled by default.
+</span><span class="n">scalafixConfigure</span><span class="o">(</span><span class="nc">Compile</span><span class="o">,</span> <span class="nc">Test</span><span class="o">,</span> <span class="nc">IntegrationTest</span><span class="o">)</span>
+
 <span class="c1">// ===&gt; sbt shell (example usage)
 </span><span class="o">&gt;</span> <span class="n">scalafix</span>                               <span class="c1">// Run .scalafix.conf rules
 </span><span class="o">&gt;</span> <span class="n">scalafix</span> <span class="nc">RemoveUnusedImports</span>           <span class="c1">// Run specific rule
@@ -174,7 +178,7 @@ wget -O scalafix https://github.com/scalacenter/scalafix/blob/master/scalafix?ra
 <p>Once the scalafix cli is installed, consult the –help page for further usage instructions.</p>
 
 <h3 id="help">–help</h3>
-<div class="highlighter-rouge"><pre class="highlight"><code>scalafix 0.5.3-29-3001203d
+<div class="highlighter-rouge"><pre class="highlight"><code>scalafix 0.5.3-31-7c318e47
 Usage: scalafix [options] [&lt;file&gt;...]
   --usage  
         Print usage and exit
