@@ -23,6 +23,7 @@ Currently, Scalafix does not provide any IDE integrations with IntelliJ/ENSIME.<
       <li><a href="#run-scalafix-cli" id="markdown-toc-run-scalafix-cli">Run scalafix-cli</a></li>
     </ul>
   </li>
+  <li><a href="#scalafix-core" id="markdown-toc-scalafix-core">scalafix-core</a></li>
 </ul>
 
 <h2 id="sbt-scalafix">sbt-scalafix</h2>
@@ -181,7 +182,7 @@ wget -O scalafix https://github.com/scalacenter/scalafix/blob/master/scalafix?ra
 <p>Once the scalafix cli is installed, consult the –help page for further usage instructions.</p>
 
 <h3 id="help">–help</h3>
-<div class="highlighter-rouge"><pre class="highlight"><code>scalafix 0.5.3-44-2f8833ee
+<div class="highlighter-rouge"><pre class="highlight"><code>scalafix 0.5.3-46-b3150361
 Usage: scalafix [options] [&lt;file&gt;...]
   --usage  
         Print usage and exit
@@ -356,17 +357,17 @@ For example, if your project is:</p>
 
 <p>But if you compiled at <code class="highlighter-rouge">moduleA</code> level only, you will need to use:</p>
 
-<p>``
-scalafix –rules RemoveUnusedImports –sourceroot /path/to/somepath/scalaProject/moduleA</p>
-<div class="highlighter-rouge"><pre class="highlight"><code>
-## scalafix-core
-Scalafix can be used as a library to run custom rules.
+<div class="highlighter-rouge"><pre class="highlight"><code>scalafix --rules RemoveUnusedImports --sourceroot /path/to/somepath/scalaProject/moduleA
+</code></pre>
+</div>
 
-```scala
-// ===&gt; build.sbt
-libraryDependencies += "ch.epfl.scala" %% "scalafix-core" % "0.5.3"
-// (optional) Scala.js is also supported
-libraryDependencies += "ch.epfl.scala" %%% "scalafix-core" % "0.5.3"
+<h2 id="scalafix-core">scalafix-core</h2>
+<p>Scalafix can be used as a library to run custom rules.</p>
+
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="c1">// ===&gt; build.sbt
+</span><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">"ch.epfl.scala"</span> <span class="o">%%</span> <span class="s">"scalafix-core"</span> <span class="o">%</span> <span class="s">"0.5.3"</span>
+<span class="c1">// (optional) Scala.js is also supported
+</span><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">"ch.epfl.scala"</span> <span class="o">%%%</span> <span class="s">"scalafix-core"</span> <span class="o">%</span> <span class="s">"0.5.3"</span>
 </code></pre>
 </div>
 
