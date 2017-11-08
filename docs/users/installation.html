@@ -17,7 +17,12 @@ Currently, Scalafix does not provide any IDE integrations with IntelliJ/ENSIME.<
       <li><a href="#help" id="markdown-toc-help">–help</a></li>
     </ul>
   </li>
-  <li><a href="#scalafix-core" id="markdown-toc-scalafix-core">scalafix-core</a></li>
+  <li><a href="#maven" id="markdown-toc-maven">Maven</a>    <ul>
+      <li><a href="#install-semanticdb-compiler-plugin" id="markdown-toc-install-semanticdb-compiler-plugin">Install semanticdb compiler plugin</a></li>
+      <li><a href="#compile-sources-with-semanticdb" id="markdown-toc-compile-sources-with-semanticdb">Compile sources with semanticdb</a></li>
+      <li><a href="#run-scalafix-cli" id="markdown-toc-run-scalafix-cli">Run scalafix-cli</a></li>
+    </ul>
+  </li>
 </ul>
 
 <h2 id="sbt-scalafix">sbt-scalafix</h2>
@@ -176,7 +181,7 @@ wget -O scalafix https://github.com/scalacenter/scalafix/blob/master/scalafix?ra
 <p>Once the scalafix cli is installed, consult the –help page for further usage instructions.</p>
 
 <h3 id="help">–help</h3>
-<div class="highlighter-rouge"><pre class="highlight"><code>scalafix 0.5.3-40-eab41e50
+<div class="highlighter-rouge"><pre class="highlight"><code>scalafix 0.5.3-44-2f8833ee
 Usage: scalafix [options] [&lt;file&gt;...]
   --usage  
         Print usage and exit
@@ -278,14 +283,90 @@ Exit status codes:
 
 </code></pre>
 </div>
+<h2 id="maven">Maven</h2>
 
-<h2 id="scalafix-core">scalafix-core</h2>
-<p>Scalafix can be used as a library to run custom rules.</p>
+<p>It is possible to use scalafix with scala-maven-plugin but it requires a custom setup since there is no scalafix specific Maven plugin.</p>
 
-<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="c1">// ===&gt; build.sbt
-</span><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">"ch.epfl.scala"</span> <span class="o">%%</span> <span class="s">"scalafix-core"</span> <span class="o">%</span> <span class="s">"0.5.3"</span>
-<span class="c1">// (optional) Scala.js is also supported
-</span><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">"ch.epfl.scala"</span> <span class="o">%%%</span> <span class="s">"scalafix-core"</span> <span class="o">%</span> <span class="s">"0.5.3"</span>
+<h3 id="install-semanticdb-compiler-plugin">Install semanticdb compiler plugin</h3>
+
+<p>First, download the <code class="highlighter-rouge">semanticdb-scalac</code> compiler plugin which corresponds to your exact scala version of your project, down to the patch number.</p>
+
+<p>To begin with, it’s recommended to install the coursier command line interface https://github.com/coursier/coursier.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>wget https://github.com/coursier/coursier/raw/master/coursier &amp;&amp; chmod +x coursier &amp;&amp; ./coursier --help
+</code></pre>
+</div>
+
+<p>Coursier is a tool to download and launch library artifacts.
+Once you have coursier installed, assuming you are on 2.12.3:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>coursier fetch --intransitive org.scalameta:semanticdb-scalac_2.12.3:2.0.1
+</code></pre>
+</div>
+
+<p>You can also use <code class="highlighter-rouge">wget</code> or a simalar tool to retrieve the jar from <code class="highlighter-rouge">https://repo1.maven.org/maven2/org/scalameta/semanticdb-scalac_2.12.3/2.0.1/semanticdb-scalac_2.12.3-2.0.1-javadoc.jar</code>.</p>
+
+<h3 id="compile-sources-with-semanticdb">Compile sources with semanticdb</h3>
+
+<p>Let’s say the <code class="highlighter-rouge">semanticdb-scalac_2.12.3-2.0.1.jar</code> is available in <code class="highlighter-rouge">PLUGINS/semanticdb-scalac_2.12.3-2.0.1.jar</code> path on your file system.</p>
+
+<p>Recompile your project using <code class="highlighter-rouge">-DaddScalacArgs</code> as follow:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>mvn clean test -DskipTests=true -DaddScalacArgs="-Yrangepos|-Xplugin-require:semanticdb|-Xplugin:PLUGIN/semanticdb-scalac_2.12.3-2.0.1.jar|-Ywarn-unused-import"
+</code></pre>
+</div>
+
+<p>Here, we compile both main sources and tests to have semantic information generated for all of them, but we skip test execution because it is not the point of that compilation. 
+The added flags for scala are given with the <code class="highlighter-rouge">addScalaArgs</code> option (see http://davidb.github.io/scala-maven-plugin/help-mojo.html#addScalacArgs):</p>
+
+<ul>
+  <li><code class="highlighter-rouge">-Yrangepos</code> is required for <code class="highlighter-rouge">semanticdb</code> to function properly,</li>
+  <li><code class="highlighter-rouge">-Xplugin:PLUGIN/semanticdb-scalac_2.12.3-2.0.1.jar</code> give the path where the <code class="highlighter-rouge">semanticdb</code> jar can be found,</li>
+  <li>(optional) <code class="highlighter-rouge">-Xplugin-require:semanticdb</code> tells scalac to fails if it can’t load the <code class="highlighter-rouge">semanticdb</code> plugin,</li>
+  <li>(optional) <code class="highlighter-rouge">-Ywarn-unused-import</code> is required for the <code class="highlighter-rouge">RemoveUnusedImports</code> rule. If you don’t run <code class="highlighter-rouge">RemoveUnusedImports</code> you can skip this flag. Consult the scalafix documentation for each rule to see which flags it requires.</li>
+  <li>(optional) Customize the –sourceroot with <code class="highlighter-rouge">-P:semanticdb:sourceroot:/path/to/sourceroot</code> (more details below)</li>
+</ul>
+
+<p>After compilation, double check that there exists a directory <code class="highlighter-rouge">target/classes/META-INF/semanticdb/</code> containing files with the <code class="highlighter-rouge">.semanticdb</code> extension.</p>
+
+<p><em>Important note</em>: you will need to recompile to get up-to-date <code class="highlighter-rouge">semanticdb</code> information after each modification.</p>
+
+<h3 id="run-scalafix-cli">Run scalafix-cli</h3>
+
+<p>Install and use <code class="highlighter-rouge">scalafix</code> as explained above.
+One important note is that you need to give <code class="highlighter-rouge">--sourceroot</code> with the root path the same as the path where you ran your <code class="highlighter-rouge">mvn clent test</code> command.
+This may be confusing when you are on a multi-module project. 
+For example, if your project is:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>somepath/scalaProject
+ |- moduleA
+ |    |- src/{main, test}/scala
+ |    `- target
+ `- moduleB
+      |- src/{main, test}/scala
+      `- target
+</code></pre>
+</div>
+
+<p>If you compile at <code class="highlighter-rouge">scalaProject</code> level, you will need to invoke scalafix with:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>scalafix --rules RemoveUnusedImports --sourceroot /path/to/somepath/scalaProject
+</code></pre>
+</div>
+
+<p>But if you compiled at <code class="highlighter-rouge">moduleA</code> level only, you will need to use:</p>
+
+<p>``
+scalafix –rules RemoveUnusedImports –sourceroot /path/to/somepath/scalaProject/moduleA</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>
+## scalafix-core
+Scalafix can be used as a library to run custom rules.
+
+```scala
+// ===&gt; build.sbt
+libraryDependencies += "ch.epfl.scala" %% "scalafix-core" % "0.5.3"
+// (optional) Scala.js is also supported
+libraryDependencies += "ch.epfl.scala" %%% "scalafix-core" % "0.5.3"
 </code></pre>
 </div>
 
