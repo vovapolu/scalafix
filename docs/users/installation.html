@@ -30,7 +30,7 @@ Currently, Scalafix does not provide any IDE integrations with IntelliJ/ENSIME.<
 <p>The sbt-plugin is the recommended integration to run semantic rules like RemoveUnusedImports or ExplicitResultTypes.</p>
 
 <div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="c1">// ===&gt; project/plugins.sbt
-</span><span class="n">addSbtPlugin</span><span class="o">(</span><span class="s">"ch.epfl.scala"</span> <span class="o">%</span> <span class="s">"sbt-scalafix"</span> <span class="o">%</span> <span class="s">"0.5.4"</span><span class="o">)</span>
+</span><span class="n">addSbtPlugin</span><span class="o">(</span><span class="s">"ch.epfl.scala"</span> <span class="o">%</span> <span class="s">"sbt-scalafix"</span> <span class="o">%</span> <span class="s">"0.5.3"</span><span class="o">)</span>
 
 <span class="c1">// ===&gt; sbt shell
 </span><span class="o">&gt;</span> <span class="n">scalafixEnable</span> <span class="c1">// Setup scalafix for active session.
@@ -160,7 +160,7 @@ files with</p>
 
 <h3 id="coursier">Coursier</h3>
 <div class="language-sh highlighter-rouge"><pre class="highlight"><code>// coursier
-coursier bootstrap ch.epfl.scala:scalafix-cli_2.12.4:0.5.4 -f --main scalafix.cli.Cli -o scalafix
+coursier bootstrap ch.epfl.scala:scalafix-cli_2.12.4:0.5.3 -f --main scalafix.cli.Cli -o scalafix
 ./scalafix --help
 </code></pre>
 </div>
@@ -182,7 +182,7 @@ wget -O scalafix https://github.com/scalacenter/scalafix/blob/master/scalafix?ra
 <p>Once the scalafix cli is installed, consult the –help page for further usage instructions.</p>
 
 <h3 id="help">–help</h3>
-<div class="highlighter-rouge"><pre class="highlight"><code>scalafix 0.5.4-2-4fe578d6
+<div class="highlighter-rouge"><pre class="highlight"><code>scalafix 0.5.3-73-f81da5f4
 Usage: scalafix [options] [&lt;file&gt;...]
   --usage  
         Print usage and exit
@@ -248,7 +248,7 @@ Usage: scalafix [options] [&lt;file&gt;...]
         Don't use fancy progress bar.
   --project-id  &lt;value&gt;
         String ID to prefix reported messages with
-Available rules: DottyKeywords, NoValInForComprehension, RemoveXmlLiterals, VolatileLazyVal, ProcedureSyntax, ExplicitUnit, DottyVolatileLazyVal, DottyVarArgPattern, NoInfer, Sbt1, ExplicitResultTypes, ExplicitReturnTypes, RemoveUnusedImports, RemoveUnusedTerms, NoAutoTupling, Disable
+Available rules: DottyKeywords, DisableSyntax, NoValInForComprehension, RemoveXmlLiterals, VolatileLazyVal, ProcedureSyntax, ExplicitUnit, DottyVolatileLazyVal, DottyVarArgPattern, NoInfer, Sbt1, ExplicitResultTypes, ExplicitReturnTypes, RemoveUnusedImports, RemoveUnusedTerms, NoAutoTupling, Disable
 
 NOTE. The command line tool is mostly intended to be invoked programmatically
 from build-tool integrations such as sbt-scalafix. The necessary fixture to run
@@ -365,9 +365,9 @@ For example, if your project is:</p>
 <p>Scalafix can be used as a library to run custom rules.</p>
 
 <div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="c1">// ===&gt; build.sbt
-</span><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">"ch.epfl.scala"</span> <span class="o">%%</span> <span class="s">"scalafix-core"</span> <span class="o">%</span> <span class="s">"0.5.4"</span>
+</span><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">"ch.epfl.scala"</span> <span class="o">%%</span> <span class="s">"scalafix-core"</span> <span class="o">%</span> <span class="s">"0.5.3"</span>
 <span class="c1">// (optional) Scala.js is also supported
-</span><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">"ch.epfl.scala"</span> <span class="o">%%%</span> <span class="s">"scalafix-core"</span> <span class="o">%</span> <span class="s">"0.5.4"</span>
+</span><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">"ch.epfl.scala"</span> <span class="o">%%%</span> <span class="s">"scalafix-core"</span> <span class="o">%</span> <span class="s">"0.5.3"</span>
 </code></pre>
 </div>
 
