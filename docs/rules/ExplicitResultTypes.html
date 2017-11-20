@@ -15,10 +15,22 @@ This rewrite inserts the inferred type from the compiler for implicit definition
 </code></pre>
 </div>
 
+<p>But for local implicit <code class="highlighter-rouge">val</code> and <code class="highlighter-rouge">def</code> it’s not needed and will not be added by default.</p>
+
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="n">foo</span> <span class="k">=</span> <span class="o">{</span>
+  <span class="c1">// this is OK
+</span>  <span class="k">implicit</span> <span class="k">val</span> <span class="n">localImplicit</span> <span class="k">=</span> <span class="mi">2</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
 <h3 id="configuration">Configuration</h3>
 
-<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="nc">ExplicitResultTypes</span><span class="o">.</span><span class="n">memberKind</span> <span class="k">=</span> <span class="o">[</span><span class="kt">Val</span>, <span class="kt">Def</span>, <span class="kt">Var</span><span class="o">]</span>
-<span class="nc">ExplicitResultTypes</span><span class="o">.</span><span class="n">memberVisibility</span> <span class="k">=</span> <span class="o">[</span><span class="kt">Public</span>, <span class="kt">Protected</span><span class="o">]</span>
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="nc">ExplicitResultTypes</span><span class="o">.</span><span class="n">memberKind</span> <span class="k">=</span> <span class="o">[</span><span class="kt">Val</span>, <span class="kt">Def</span>, <span class="kt">Var</span><span class="o">]</span> <span class="c1">// empty by default
+</span><span class="nc">ExplicitResultTypes</span><span class="o">.</span><span class="n">memberVisibility</span> <span class="k">=</span> <span class="o">[</span><span class="kt">Public</span>, <span class="kt">Protected</span><span class="o">]</span> <span class="c1">// empty by default
+</span><span class="nc">ExplicitResultTypes</span><span class="o">.</span><span class="n">skipSimpleDefinitions</span> <span class="k">=</span> <span class="kc">false</span> <span class="c1">// true by default
+</span><span class="nc">ExplicitResultTypes</span><span class="o">.</span><span class="n">skipLocalImplicits</span> <span class="k">=</span> <span class="kc">false</span> <span class="c1">// true by default
+</span>    
 <span class="c1">// Experimental, shorten fully qualified names and insert missing imports
 // By default, names are fully qualified and prefixed with _root_.
 </span><span class="n">unsafeShortenNames</span> <span class="k">=</span> <span class="kc">true</span> <span class="c1">// false by default.
