@@ -47,13 +47,38 @@ sbt tests/test
     <p>Test failures are reported as unified diffs from the obtained output of the rule and the expected output in the <code class="highlighter-rouge">output</code> project.</p>
   </li>
   <li>
-    <p>Assert that a <a href="/scalafix/docs/rule-authors/glossary#lintmessage">LintMessage</a> is expected at a particular line by suffixing the line with the comment <code class="highlighter-rouge">// assert: &lt;LintCategory&gt;</code>. The test fails if there exist reported lint messages that have no associated assertion in the input file. For an example, see the NoInfer test suite:</p>
+    <p>Assert that a <a href="/scalafix/docs/rule-authors/glossary#lintmessage">LintMessage</a> is expected at a particular line by suffixing the line with the comment <code class="highlighter-rouge">// assert: &lt;LintCategory&gt;</code>. For an example, see the NoInfer test suite:</p>
   </li>
 </ul>
 
 <div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="k">val</span> <span class="n">x</span> <span class="k">=</span> <span class="nc">List</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="s">""</span><span class="o">)</span><span class="c1">// assert: NoInfer.any
 </span></code></pre>
 </div>
+
+<p>It’s also possible to assert the offset position and the message contents with a multiline comment:</p>
+
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="nc">Option</span><span class="o">(</span><span class="mi">1</span><span class="o">).</span><span class="n">get</span> <span class="cm">/* assert: Disable.get
+          ^
+Option.get is the root of all evils
+
+If you must Option.get, wrap the code block with
+// scalafix:off Option.get
+...
+// scalafix:on Option.get
+*/</span>
+</code></pre>
+</div>
+
+<ul>
+  <li>The test can fail if:
+    <ul>
+      <li>An assert was added but it was not reported by the linter (unreported)</li>
+      <li>A lint message was reported but it was not asserted (unexpected)</li>
+      <li>An assert was added and a message was reported on that line but it does not
+match the message exactly. For example the offset can be wrong by a few column or you can have a typo in your assert message.</li>
+    </ul>
+  </li>
+</ul>
 </section></div></div></div></div><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script><script src="/scalafix/highlight/highlight.pack.js"></script><script>hljs.configure({
 languages:['scala','java','bash']
 });
