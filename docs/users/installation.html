@@ -99,7 +99,7 @@ contain the values below.</p>
     <tr>
       <td><code class="highlighter-rouge">sbtfix &lt;rule&gt;..</code></td>
       <td><code class="highlighter-rouge">Unit</code></td>
-      <td>Run scalafix on the build sources, <code class="highlighter-rouge">*.sbt</code> and <code class="highlighter-rouge">project/*</code>. <strong>Note</strong>: Requires semanticdb-sbt enabled globally for semantic rules.</td>
+      <td>Run scalafix on the build sources, <code class="highlighter-rouge">*.sbt</code> and <code class="highlighter-rouge">project/*</code>. <strong>Note</strong>: Only supports syntactic rules.</td>
     </tr>
     <tr>
       <td><code class="highlighter-rouge">scalafixSourceRoot</code></td>
@@ -138,17 +138,18 @@ contain the values below.</p>
 <p><strong>⚠️ Experimental</strong></p>
 
 <p>semanticdb-sbt is a Scala 2.10 compiler plugin that extracts semantic
-information from the sbt compiler. To enable semanticdb-sbt,</p>
+information from the sbt compiler.
+Note. semanticdb-sbt only works for *.scala files, it does not
+support *.sbt files.</p>
 
 <div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="c1">// project/plugins.sbt
 </span><span class="n">addCompilerPlugin</span><span class="o">(</span><span class="s">"org.scalameta"</span> <span class="o">%</span> <span class="s">"semanticdb-sbt"</span> <span class="o">%</span> <span class="s">"0.4.0"</span> <span class="n">cross</span> <span class="nc">CrossVersion</span><span class="o">.</span><span class="n">full</span><span class="o">)</span>
 </code></pre>
 </div>
 
-<p>Once enabled, you can run scalafix rules against <code class="highlighter-rouge">project/*.scala</code> and <code class="highlighter-rouge">*.sbt</code>
-files with</p>
+<p>Once enabled, you can run scalafix rules against <code class="highlighter-rouge">project/*.scala</code>:</p>
 
-<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="o">&gt;</span> <span class="n">reload</span> <span class="c1">// rebuild semanticdb for *.sbt and project/*.scala sources
+<div class="language-scala highlighter-rouge"><pre class="highlight"><code><span class="o">&gt;</span> <span class="n">reload</span> <span class="c1">// rebuild semanticdb for project/*.scala sources
 </span><span class="o">&gt;</span> <span class="n">sbtfix</span> <span class="nc">Sbt1</span>
 </code></pre>
 </div>
@@ -182,7 +183,7 @@ wget -O scalafix https://github.com/scalacenter/scalafix/blob/master/scalafix?ra
 <p>Once the scalafix cli is installed, consult the –help page for further usage instructions.</p>
 
 <h3 id="help">–help</h3>
-<div class="highlighter-rouge"><pre class="highlight"><code>scalafix 0.5.6-11-7e4ac2e9
+<div class="highlighter-rouge"><pre class="highlight"><code>scalafix 0.5.6-18-b9398ec8
 Usage: scalafix [options] [&lt;file&gt;...]
   --usage  
         Print usage and exit
@@ -317,7 +318,7 @@ Once you have coursier installed, assuming you are on 2.12.3:</p>
 </code></pre>
 </div>
 
-<p>Here, we compile both main sources and tests to have semantic information generated for all of them, but we skip test execution because it is not the point of that compilation. 
+<p>Here, we compile both main sources and tests to have semantic information generated for all of them, but we skip test execution because it is not the point of that compilation.
 The added flags for scala are given with the <code class="highlighter-rouge">addScalaArgs</code> option (see http://davidb.github.io/scala-maven-plugin/help-mojo.html#addScalacArgs):</p>
 
 <ul>
@@ -336,7 +337,7 @@ The added flags for scala are given with the <code class="highlighter-rouge">add
 
 <p>Install and use <code class="highlighter-rouge">scalafix</code> as explained above.
 One important note is that you need to give <code class="highlighter-rouge">--sourceroot</code> with the root path the same as the path where you ran your <code class="highlighter-rouge">mvn clent test</code> command.
-This may be confusing when you are on a multi-module project. 
+This may be confusing when you are on a multi-module project.
 For example, if your project is:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>somepath/scalaProject
