@@ -12,6 +12,7 @@ DisableSyntax.noXml = true
 DisableSyntax.noVariantTypes = true
 DisableSyntax.noDefaultArgs = true
 DisableSyntax.noValInAbstract = true
+DisableSyntax.noImplicitObject = true
 DisableSyntax.regex = [
   {
     pattern = "[P|p]imp"
@@ -94,4 +95,6 @@ case object DisableSyntax {
   val anon = new AbstractThing {
     val itsalsook = "indeed" // ok
   }
+
+  implicit object FooImplicit extends Foo {} // assert: DisableSyntax.implicitObject
 }
