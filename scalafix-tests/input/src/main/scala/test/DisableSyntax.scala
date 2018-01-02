@@ -13,6 +13,7 @@ DisableSyntax.noVariantTypes = true
 DisableSyntax.noDefaultArgs = true
 DisableSyntax.noValInAbstract = true
 DisableSyntax.noImplicitObject = true
+DisableSyntax.noImplicitConversion = true
 DisableSyntax.regex = [
   {
     pattern = "[P|p]imp"
@@ -97,4 +98,7 @@ case object DisableSyntax {
   }
 
   implicit object FooImplicit extends Foo {} // assert: DisableSyntax.implicitObject
+
+  implicit def toString(a: Any): String = a.toString // assert: DisableSyntax.implicitConversion
+  implicit def toImplicitString(implicit foo: Foo) = foo.toString // ok
 }
