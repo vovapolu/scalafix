@@ -21,6 +21,9 @@ object DenotationOps {
       case x =>
         x
     }
+    println(denot)
+    println(denot.isPrimaryCtor)
+    println(denot.isSecondaryCtor)
     val signature =
       if (denot.isVal || denot.isDef | denot.isVar) denot.signature
       else {
