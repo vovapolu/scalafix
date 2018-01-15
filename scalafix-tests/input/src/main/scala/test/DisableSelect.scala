@@ -11,5 +11,7 @@ DisableSelect.symbols = [
 package test
 
 object DisableSelect {
-  Array(1, 2, 3).equals(Array(4, 5, 6))
+  def f(is: Int*): Array[Int] = is.toArray
+
+  f(1, 2, 3).equals(f(4, 5, 6))
 }

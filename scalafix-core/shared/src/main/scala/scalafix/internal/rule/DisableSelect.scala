@@ -9,6 +9,7 @@ import scalafix.internal.util.{StatementOps, SymbolOps}
 import scalafix.lint.LintCategory
 import scalafix.rule.{RuleCtx, SemanticRule}
 import scalafix.util.{SemanticdbIndex, SymbolMatcher}
+import scalafix.syntax._
 
 final case class DisableSelect(
     index: SemanticdbIndex,
@@ -33,14 +34,13 @@ final case class DisableSelect(
 
   override def check(ctx: RuleCtx): Seq[LintMessage] = {
 
-    def treeIsBlocked(
-        tree: Tree,
-        blockedSymbols: List[Symbol.Global]): Boolean =
-      ctx.index.symbol(tree) match {
-        case Some(s: Symbol.Global) =>
-          blockedSymbols.exists(SymbolOps.isSameNormalized(_, s))
-        case _ => false
+    // A[B] -> A
+    def tryToMakeSimpler(tpe: Type): Type = {
+      tpe match {
+         case Type.Apply(t, _) => t
+         case _ => tpe
       }
+    }
 
     def globalSymbol(index: SemanticdbIndex, t: Tree): Option[Symbol.Global] =
       index.symbol(t) match {
@@ -50,12 +50,18 @@ final case class DisableSelect(
 
     ctx.tree.collect {
       case Term.Select(qual, name) =>
+        val f = StatementOps.fullStatementType(qual, ctx)
+        val sf = f.map(tryToMakeSimpler)
+        println(f)
+        println(sf)
+        println(qual.symbol.flatMap(_.resultType))
+        println(sf.map(disabledQualTypes.matches))
+        println("------")
         for {
           fullQualType <- StatementOps.fullStatementType(qual, ctx)
-          qualSymbol <- globalSymbol(ctx.index, qual)
-          if disabledQualTypes.matches(fullQualType) && treeIsBlocked(
-            name,
-            config.namesForQual(qualSymbol))
+          simpleType = tryToMakeSimpler(fullQualType)
+          qualSymbol <- globalSymbol(ctx.index, simpleType)
+          if disabledQualTypes.matches(qualSymbol)
         } yield
           errorCategory
             .copy(id = name.toString)

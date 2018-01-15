@@ -21,15 +21,12 @@ object DenotationOps {
       case x =>
         x
     }
-    println(denot)
-    println(denot.isPrimaryCtor)
-    println(denot.isSecondaryCtor)
-    val signature =
-      if (denot.isVal || denot.isDef | denot.isVar) denot.signature
-      else {
-        throw new UnsupportedOperationException(
-          s"Can't parse type for denotation $denot, denot.info=${denot.signature}")
-      }
+    val signature = denot.signature
+//      if (denot.isVal || denot.isDef | denot.isVar) denot.signature
+//      else {
+//        throw new UnsupportedOperationException(
+//          s"Can't parse type for denotation $denot, denot.info=${denot.signature}")
+//      }
     val input = Input.Denotation(signature, symbol)
     (dialect, input).parse[Type].toOption.map(getDeclType)
   }

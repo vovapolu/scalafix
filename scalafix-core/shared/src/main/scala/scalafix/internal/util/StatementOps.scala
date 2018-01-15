@@ -3,10 +3,9 @@ package scalafix.internal.util
 import scala.meta._
 import scalafix.SemanticdbIndex
 import scalafix.rule.RuleCtx
+import scalafix.syntax._
 
 object StatementOps {
-  import scalafix.syntax._
-
   def litType(l: Lit): Option[Type] = l match {
     case Lit.Int(_) => Some(t"_root_.scala.Int")
     case Lit.Unit() => Some(t"_root_.scala.Unit")
